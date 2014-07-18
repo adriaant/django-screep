@@ -203,8 +203,6 @@ class CrawlerTask(object):
                     sm_list.append(s)
             for url in downloader.urls:
                 url_count += 1
-                if url_count >= 10:
-                    return
                 job = Job(url, xpaths, head_only)
                 self.urlqueue.put(job)
 

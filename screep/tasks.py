@@ -193,7 +193,6 @@ class CrawlerTask(object):
         downloader = SitemapDownloader()
         sm_list = list(self.sitemaps)
         # just for testing
-        url_count = 0
         while len(sm_list) > 0:
             sitemap = sm_list.pop(0)
             downloader.download(sitemap)
@@ -202,7 +201,6 @@ class CrawlerTask(object):
                     # some sitemap.xml files have duplicate entries!
                     sm_list.append(s)
             for url in downloader.urls:
-                url_count += 1
                 job = Job(url, xpaths, head_only)
                 self.urlqueue.put(job)
 

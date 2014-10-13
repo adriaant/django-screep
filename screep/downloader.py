@@ -28,10 +28,10 @@ class GenericFactory(object):
     Generic factory to dynamically create objects based on given type.
     """
     @classmethod
-    def build(cls, type, **kwargs):
-        type = type.lower()
+    def build(cls, obj_type, **kwargs):
+        obj_type = obj_type.lower()
         for c in cls.__subclasses__():
-            if type in c.__name__.lower():
+            if obj_type in c.__name__.lower():
                 return c(**kwargs)
 
 
@@ -88,7 +88,6 @@ class DownloadFactory(GenericFactory):
         """
         Uses requests to download data from a url. Response is processed according to type of download.
         """
-        global jar
         if not url:
             raise CrawlerException(message="Download requires a URL.")
         url = url if '://' in url else "http://%s" % url
@@ -125,7 +124,7 @@ class DownloadFactory(GenericFactory):
             pass
 
         elapsed = float(response.elapsed.microseconds) / 1000000
-        log.debug("[%s] (%s) %s in %ss" % (str(responsecode), str(content_length), url, str(elapsed)))
+        log.debug("[%s] (%s) %s in %ss", str(responsecode), str(content_length), url, str(elapsed))
         self.gzipped = ('gzip' in response.headers.get('content-type', ''))
         self.process_response(response)
         response.close()
